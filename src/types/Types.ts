@@ -4,7 +4,7 @@ export interface MenuItem {
     description: string;
     category_name?: string;
     price: number;
-    menuitemimage_url: string;
+    menuitem_image_url: string;
     is_available: boolean;
     quantity?: number;
     rating?: number;

@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       const response = await loginUser(data).unwrap()
       console.log('Login successful:', response)
       dispatch(setCredentials({ token: response.token, user: response.userInfo }))
-      navigate('/meals')
+      navigate('/about')
     } catch (error: any) {
       console.error('Login failed:', error)
       toast.error(error.data.error)

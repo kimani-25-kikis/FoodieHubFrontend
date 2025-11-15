@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
+import type { MenuItem } from '../../types/Types'
 
 export const menuItemApi = createApi({
     reducerPath: 'menuItemApi',
@@ -7,20 +7,29 @@ export const menuItemApi = createApi({
     tagTypes: ['MenuItems'],
     endpoints: (builder) => ({
 
-       // Fetch all Menu Items
-        getAllMenuItems: builder.query<{ menu_item_id: number; name: string; description: string; price: number; is_available: boolean; menuitem_image_url: string }[], void>({
+        // Fetch all Menu Items
+        getAllMenuItems: builder.query<
+            { success: boolean; data: MenuItem[] },  // <-- FIXED TYPE
+            void
+        >({
             query: () => '/menu-items',
             providesTags: ['MenuItems'],
         }),
 
-        //get menu item by id
-        getMenuItemById: builder.query<{ menu_item_id: number; name: string; description: string; price: number; is_available: boolean; menuitem_image_url: string }, number>({
+        // Get menu item by ID
+        getMenuItemById: builder.query<
+            { success: boolean; data: MenuItem },   // <-- FIXED TYPE
+            number
+        >({
             query: (id) => `/menu-items/${id}`,
-            providesTags:['MenuItems'],
+            providesTags: ['MenuItems'],
         }),
 
-        //add new menu item
-        addMenuItem: builder.mutation<{ message: string }, { name: string; description: string; price: number; is_available: boolean; menuitem_image_url: string }>({
+        // Add new menu item
+        addMenuItem: builder.mutation<
+            { success: boolean; data: MenuItem },   // <-- FIXED TYPE
+            Partial<MenuItem>
+        >({
             query: (newItem) => ({
                 url: '/menu-items',
                 method: 'POST',
@@ -28,22 +37,30 @@ export const menuItemApi = createApi({
             }),
             invalidatesTags: ['MenuItems'],
         }),
-        //update menu item
-        updateMenuItem: builder.mutation<{ message: string }, { menu_item_id: number; name?: string; description?: string; price?: number; is_available?: boolean; menuitem_image_url?: string }>({
-            query: (updatedItem) => ({  
+
+        // Update menu item
+        updateMenuItem: builder.mutation<
+            { success: boolean; data: MenuItem },   // <-- FIXED TYPE
+            Partial<MenuItem> & { menu_item_id: number }
+        >({
+            query: (updatedItem) => ({
                 url: `/menu-items/${updatedItem.menu_item_id}`,
                 method: 'PUT',
                 body: updatedItem,
             }),
             invalidatesTags: ['MenuItems'],
         }),
-        //delete menu item
-        deleteMenuItem: builder.mutation<{ message: string }, number>({
+
+        // Delete menu item
+        deleteMenuItem: builder.mutation<
+            { success: boolean; message: string }, // or data: MenuItem
+            number
+        >({
             query: (id) => ({
                 url: `/menu-items/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['MenuItems'],
-        }), 
+        }),
     }),
-})                                                                                                                                                                                                                                                                                                        
+})
