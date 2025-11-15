@@ -53,15 +53,17 @@ const Contact: React.FC = () => {
             <Navbar />
 
             {/* HERO */}
-            <div className="bg-gradient-to-r from-rose-700 to-orange-500 text-white py-20 px-8 text-center shadow">
-                <h1 className="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
-                    📞 Get in Touch
-                </h1>
-                <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-                    Whether you have questions, feedback, or want to make a reservation — 
-                    we’re here to help you anytime.
-                </p>
-            </div>
+            <div className="bg-white text-center py-20 px-8 shadow-sm">
+  <h1 className="text-4xl md:text-6xl font-bold text-rose-700 mb-4">
+    📞 Get in Touch
+  </h1>
+
+  <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+    Whether you have questions, feedback, or want to make a reservation — 
+    we’re here to help you anytime.
+  </p>
+</div>
+
 
             {/* CONTACT INFO CARDS */}
             <div className="py-16 px-8 bg-rose-50">
@@ -93,7 +95,7 @@ const Contact: React.FC = () => {
                             key={idx}
                             className="bg-white p-8 rounded-3xl shadow-xl text-center hover:-translate-y-2 transition-transform"
                         >
-                            <div className="text-6xl mb-4">{item.icon}</div>
+                            <div className="text-3xl mb-4">{item.icon}</div>
 
                             <h3 className="text-xl font-bold text-rose-700 mb-2">{item.title}</h3>
 

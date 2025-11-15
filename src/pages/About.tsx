@@ -8,14 +8,16 @@ const About: React.FC = () => {
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="bg-gradient-to-r from-rose-700 to-orange-500 text-white py-20 px-8 text-center shadow-lg">
-        <h1 className="text-5xl md:text-6xl font-extrabold drop-shadow-lg mb-4">
-          🍽️ About FoodieHub
-        </h1>
-        <p className="text-lg md:text-2xl max-w-3xl mx-auto opacity-90 leading-relaxed">
-          Where passion meets flavor — celebrating food, culture, and unforgettable dining experiences.
-        </p>
-      </section>
+      <section className="bg-rose-50 text-center py-20 px-8 shadow-md">
+  <h1 className="text-4xl md:text-5xl font-bold text-rose-700 mb-6">
+    🍽️ About FoodieHub
+  </h1>
+
+  <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 leading-relaxed">
+    Where passion meets flavor, celebrating food, culture, and unforgettable dining experiences. Here we ensure you met your taste and the memories will never fade
+  </p>
+</section>
+
 
       {/* OUR STORY */}
       <section className="py-20 px-8 bg-white">
@@ -183,25 +185,33 @@ const About: React.FC = () => {
       </section>
 
       {/* CALL TO ACTION */}
-      <section className="py-20 px-8 bg-gradient-to-r from-rose-700 to-orange-500 text-white text-center">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold mb-4">🌟 Ready to Experience the Magic?</h2>
-          <p className="text-lg md:text-xl opacity-90 mb-10 leading-relaxed">
-            Whether you're here for a quick bite or a special celebration, we promise 
-            unforgettable flavors and heartfelt hospitality.
-          </p>
+      <section className="py-20 px-8 bg-rose-50 text-center">
+  <div className="max-w-4xl mx-auto">
+    <h2 className="text-4xl font-bold text-rose-700 mb-4">
+      🌟 Ready to Experience the Magic?
+    </h2>
 
-          <div className="flex justify-center gap-6 flex-wrap">
-            <button className="px-8 py-4 bg-white text-rose-700 rounded-full font-bold text-lg shadow hover:-translate-y-1 hover:shadow-xl transition">
-              🍽️ View Menu
-            </button>
+    <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed">
+      Whether you're here for a quick bite or a special celebration, we promise 
+      unforgettable flavors and heartfelt hospitality.
+    </p>
 
-            <button className="px-8 py-4 border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-rose-700 transition hover:-translate-y-1">
-              📞 Contact Us
-            </button>
-          </div>
-        </div>
-      </section>
+    <div className="flex justify-center gap-6 flex-wrap">
+
+      {/* Primary Button */}
+      <button className="px-8 py-4 bg-rose-700 text-white rounded-full font-bold text-lg shadow hover:bg-rose-800 hover:-translate-y-1 hover:shadow-xl transition">
+        🍽️ View Menu
+      </button>
+
+      {/* Outline Button */}
+      <button className="px-8 py-4 border-2 border-rose-700 text-rose-700 rounded-full font-bold text-lg hover:bg-rose-700 hover:text-white transition hover:-translate-y-1">
+        📞 Contact Us
+      </button>
+
+    </div>
+  </div>
+</section>
+
 
       <Footer />
     </div>

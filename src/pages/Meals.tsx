@@ -88,7 +88,7 @@ const Meals: React.FC = () => {
       </nav> */}
 
       {/* Hero Section */}
-      <div className="pt-28 pb-12 px-8 text-center bg-gradient-to-r from-rose-700 to-orange-500 text-white shadow-lg">
+      <div className="pt-28 pb-12 px-8 text-center bg-gradient-to-r from-rose-500 to-orange-400 text-white shadow-lg">
         <h1 className="text-5xl font-extrabold mb-4 drop-shadow-lg animate-pulse">
           Discover Flavors that Speak to You 🌮
         </h1>
