@@ -68,27 +68,27 @@ const CustomerReviews: React.FC = () => {
     }
 
     return (
-        <div className="py-16 px-8 bg-linear-to-br from-green-50 to-green-100">
+        <div className="py-16 px-8 bg-gradient-to-br from-rose-50 to-orange-50">
             <div className="max-w-6xl mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-bold text-green-800 mb-4">
+                    <h2 className="text-4xl font-bold text-rose-900 mb-4">
                         🌟 What Our Customers Say
                     </h2>
-                    <p className="text-xl text-gray-600">
+                    <p className="text-xl text-rose-700">
                         Don't just take our word for it - hear from our amazing customers!
                     </p>
                 </div>
 
                 {/* Main Review Display */}
-                <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8 transform hover:scale-105 transition-all duration-300">
+                <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8 transform hover:scale-105 transition-all duration-300 border border-rose-200">
                     <div className="flex flex-col lg:flex-row items-center gap-8">
                         {/* Customer Image */}
                         <div className="shrink-0">
                             <img
                                 src={reviews[currentReview].image}
                                 alt={reviews[currentReview].name}
-                                className="w-24 h-24 rounded-full border-4 border-green-200 shadow-lg"
+                                className="w-24 h-24 rounded-full border-4 border-rose-200 shadow-lg"
                             />
                         </div>
 
@@ -98,14 +98,14 @@ const CustomerReviews: React.FC = () => {
                                 {renderStars(reviews[currentReview].rating)}
                             </div>
 
-                            <blockquote className="text-xl text-gray-700 mb-4 italic leading-relaxed">
+                            <blockquote className="text-xl text-rose-800 mb-4 italic leading-relaxed">
                                 "{reviews[currentReview].comment}"
                             </blockquote>
 
-                            <div className="font-bold text-lg text-green-800">
+                            <div className="font-bold text-lg text-rose-900">
                                 {reviews[currentReview].name}
                             </div>
-                            <div className="text-gray-500">
+                            <div className="text-rose-600">
                                 📍 {reviews[currentReview].location}
                             </div>
                         </div>
@@ -119,8 +119,8 @@ const CustomerReviews: React.FC = () => {
                             key={index}
                             onClick={() => setCurrentReview(index)}
                             className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentReview
-                                ? 'bg-green-600 scale-125'
-                                : 'bg-gray-300 hover:bg-green-400'
+                                ? 'bg-rose-600 scale-125'
+                                : 'bg-rose-300 hover:bg-rose-400'
                                 }`}
                             aria-label={`View review ${index + 1}`}
                         />
@@ -133,20 +133,20 @@ const CustomerReviews: React.FC = () => {
                         <div
                             key={review.id}
                             onClick={() => setCurrentReview(index)}
-                            className={`bg-white p-6 rounded-2xl shadow-lg cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${index === currentReview ? 'ring-2 ring-green-400 scale-105' : ''
+                            className={`bg-white p-6 rounded-2xl shadow-lg cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-rose-200 ${index === currentReview ? 'ring-2 ring-rose-400 scale-105' : ''
                                 }`}
                         >
                             <div className="text-center">
                                 <img
                                     src={review.image}
                                     alt={review.name}
-                                    className="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-green-200"
+                                    className="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-rose-200"
                                 />
                                 <div className="flex justify-center mb-2">
                                     {renderStars(review.rating)}
                                 </div>
-                                <h4 className="font-bold text-green-800 mb-1">{review.name}</h4>
-                                <p className="text-sm text-gray-500">{review.location}</p>
+                                <h4 className="font-bold text-rose-900 mb-1">{review.name}</h4>
+                                <p className="text-sm text-rose-600">{review.location}</p>
                             </div>
                         </div>
                     ))}

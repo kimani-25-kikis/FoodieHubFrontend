@@ -44,34 +44,34 @@ const OurTopChoiceMeal: React.FC = () => {
     return (
         <section className="py-20 px-5 bg-white">
             <div className="max-w-6xl mx-auto text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">Our Top Choice Meals</h2>
-                <p className="text-lg text-gray-600 mb-15 max-w-2xl mx-auto leading-relaxed">
+                <h2 className="text-3xl md:text-4xl font-bold text-rose-900 mb-4">Our Top Choice Meals</h2>
+                <p className="text-lg text-rose-700 mb-15 max-w-2xl mx-auto leading-relaxed">
                     Discover our most loved dishes, carefully crafted with fresh ingredients and authentic flavors
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                     {OurTopChoiceMeals.map((meal) => (
-                        <div key={meal.menu_item_id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+                        <div key={meal.menu_item_id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-rose-200">
                             <div className="relative h-64 overflow-hidden">
                                 <img
                                     src={meal.menuitemimage_url}
                                     alt={meal.name}
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                 />
-                                <div className="absolute top-4 left-4 bg-green-800 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                                <div className="absolute top-4 left-4 bg-gradient-to-r from-rose-700 to-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
                                     {meal.category_name}
                                 </div>
                             </div>
 
                             <div className="p-6 text-left">
-                                <h3 className="text-xl font-semibold text-green-800 mb-3">{meal.name}</h3>
-                                <p className="text-gray-600 text-sm leading-relaxed mb-6 h-16 overflow-hidden">
+                                <h3 className="text-xl font-semibold text-rose-900 mb-3">{meal.name}</h3>
+                                <p className="text-rose-700 text-sm leading-relaxed mb-6 h-16 overflow-hidden">
                                     {meal.description}
                                 </p>
 
                                 <div className="flex justify-between items-center">
-                                    <div className="text-2xl font-bold text-green-800">${meal.price}</div>
-                                    <button className="bg-green-800 hover:bg-green-900 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                    <div className="text-2xl font-bold text-rose-900">${meal.price}</div>
+                                    <button className="bg-gradient-to-r from-rose-700 to-orange-600 hover:from-rose-800 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                                         Order Now
                                     </button>
                                 </div>

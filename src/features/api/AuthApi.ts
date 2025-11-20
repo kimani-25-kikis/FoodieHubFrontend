@@ -1,4 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { User, UserFormValues } from '../../types/Types';
+
+
+type LoginValues={
+    email?: string; 
+    username?:string;
+    password: string
+}
 
 
 export const AuthApi = createApi({
@@ -7,7 +15,7 @@ export const AuthApi = createApi({
     endpoints: (builder) => ({
 
         // User Login
-        login: builder.mutation<{ token: string; userInfo: any }, { email: string; password: string }>({
+        login: builder.mutation<{ token: string; userInfo: any }, LoginValues>({
             query: (credentials) => ({
                 url: '/auth/login',
                 method: 'POST',

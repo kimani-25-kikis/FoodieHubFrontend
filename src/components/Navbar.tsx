@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCredentials } from "../features/slice/AuthSlice";
 import type { RootState } from "../store/store";
+import { ChevronDown, LogOut } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,10 +53,10 @@ const Navbar: React.FC = () => {
         {/* LEFT — Brand + Mobile Menu */}
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden text-rose-700">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden text-rose-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -63,37 +64,33 @@ const Navbar: React.FC = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth="2"
                   d="M4 6h16M4 12h8m-8 6h16"
                 />
               </svg>
-            </label>
-
+            </div>
             <ul
-              tabIndex={0}
+              tabIndex={-1}
               className="
-              menu menu-sm dropdown-content mt-3 z-20 w-52
+              menu menu-sm dropdown-content mt-3 z-20 w-52 p-2
               rounded-xl bg-white/95 backdrop-blur-md
               text-rose-700 shadow-lg border border-rose-100
             "
             >
-              {navLink("/", "Home")}
-              {navLink("/meals", "Meals")}
-              {navLink("/about", "About")}
-              {navLink("/contact", "Contact")}
-
+              <Link to="/"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200">Home</li></Link>
+              <Link to="/meals"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200">Meals</li></Link>
+              <Link to="/dashboard"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200">Dashboard</li></Link>
+              <Link to="/about"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200">About</li></Link>
+              <Link to="/contact"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200">Contact</li></Link>
               {!isAuthenticated && (
-                <>
-                  {navLink("/register", "Register")}
-                  {navLink("/login", "Login")}
-                </>
+                <Link to="/register"><li className="text-white btn bg-rose-700 hover:bg-rose-800 rounded-md transition-colors duration-200">Register</li></Link>
               )}
             </ul>
           </div>
 
           <Link
             to="/"
-            className="text-2xl font-extrabold tracking-wide flex items-center gap-2 text-rose-700"
+            className="text-2xl font-extrabold tracking-wide flex items-center gap-2 text-rose-700 hover:bg-transparent"
           >
             🍽️ FoodieHub
           </Link>
@@ -101,27 +98,14 @@ const Navbar: React.FC = () => {
 
         {/* CENTER — Desktop Navigation */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal space-x-2">
-            {navLink("/", "Home")}
-            {navLink("/meals", "Meals")}
-            {navLink("/about", "About")}
-            {navLink("/contact", "Contact")}
-
+          <ul className="menu menu-horizontal px-1 gap-2">
+            <Link to="/"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 font-medium px-4 py-2 rounded-md transition-all duration-300">Home</li></Link>
+            <Link to="/meals"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 font-medium px-4 py-2 rounded-md transition-all duration-300">Meals</li></Link>
+            <Link to="/dashboard"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 font-medium px-4 py-2 rounded-md transition-all duration-300">Dashboard</li></Link>
+            <Link to="/about"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 font-medium px-4 py-2 rounded-md transition-all duration-300">About</li></Link>
+            <Link to="/contact"><li className="text-rose-600 hover:text-rose-800 hover:bg-rose-50 font-medium px-4 py-2 rounded-md transition-all duration-300">Contact</li></Link>
             {!isAuthenticated && (
-              <li>
-                <Link
-                  to="/register"
-                  className="
-                    px-4 py-2 rounded-xl
-                    bg-rose-700 text-white
-                    hover:bg-rose-800
-                    font-semibold shadow
-                    transition-all
-                  "
-                >
-                  Register
-                </Link>
-              </li>
+              <Link to="/register"><li className="text-white btn bg-rose-700 hover:bg-rose-800 font-medium px-4 py-2 rounded-md transition-all duration-300">Register</li></Link>
             )}
           </ul>
         </div>
@@ -143,27 +127,19 @@ const Navbar: React.FC = () => {
             </Link>
           ) : (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost text-rose-700 flex items-center gap-2">
-                <span className="font-semibold">Hi, {user?.last_name}</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M19 9l-7 7-7-7" />
-                </svg>
-              </label>
-
-              <ul
-                tabIndex={0}
-                className="
-                  dropdown-content menu bg-white text-rose-700
-                  rounded-xl shadow-lg mt-3 w-52
-                  border border-rose-100
-                "
-              >
+              <button className="btn btn-ghost flex items-center text-rose-700">
+                <div className="flex items-center">
+                  <span className="font-semibold">Hey, {user?.last_name}</span>
+                  <ChevronDown color="#be123c" />                                
+                </div>
+              </button>
+              <ul className="dropdown-content bg-white rounded-xl z-1 mt-3 w-52 p-2 shadow border border-rose-100">
                 <li>
                   <button
                     onClick={() => setConfirmLogout(true)}
-                    className="hover:bg-rose-50 hover:text-rose-800 rounded-lg"
+                    className="flex items-center text-rose-700 hover:text-rose-800 hover:bg-rose-50 rounded-lg cursor-pointer w-full px-3 py-2"
                   >
+                    <LogOut color="#be123c" className='mr-3'/>
                     Logout
                   </button>
                 </li>
