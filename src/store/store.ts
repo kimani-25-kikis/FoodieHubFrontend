@@ -34,7 +34,8 @@ export const store = configureStore({
             AuthApi.middleware, 
             menuItemApi.middleware, 
             orderApi.middleware,
-            dashboardDataApi.middleware // ADD THIS LINE
+            userApi.middleware,          
+            dashboardDataApi.middleware
         ),
 })
 
