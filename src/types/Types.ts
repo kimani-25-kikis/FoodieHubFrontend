@@ -97,3 +97,27 @@ export interface RecentOrder {
     status: 'Delivered' | 'Preparing' | 'Ready' | 'Cancelled';
     time: string;
 }
+
+export interface Category {
+    category_id: number;
+    name: string;
+    restaurant_id: number;
+    is_active: boolean;
+    description: string;
+}
+
+export interface Restaurant {
+    restaurant_id: number;
+    name: string;
+    description: string;
+    address: string;
+    city: string;
+    phone_number: string;
+    email: string;
+    opening_time: string;
+    closing_time: string;
+    cuisine_type: string;
+    is_active: boolean;
+    created_at: string;
+}
+

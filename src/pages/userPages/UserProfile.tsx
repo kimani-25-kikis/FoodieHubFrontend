@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import DashboardLayout from '../../dashboardDesign/DashBoardLayout'
-import { User, Edit, Save, X, Mail, Phone, Calendar, Shield, Check } from 'lucide-react'
+import { User, Edit, Save, X, Mail, Phone, Calendar, Shield, Check, Star, Award, Clock } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 import { userApi } from '../../features/api/UserApi'
 import { toast, Toaster } from 'sonner'
 import { skipToken } from '@reduxjs/toolkit/query';
-
 
 const UserProfile: React.FC = () => {
     const { user, isAuthenticated } = useSelector((state: RootState) => state.authSlice)
@@ -60,9 +59,9 @@ const UserProfile: React.FC = () => {
 
             setOriginalData(formData)
             setIsEditing(false)
-            toast.success("Profile updated!", { id: loader })
+            toast.success("Profile updated successfully!", { id: loader })
         } catch (e) {
-            toast.error("Failed to update profile.", { id: loader })
+            toast.error("Failed to update profile. Please try again.", { id: loader })
         }
     }
 
@@ -80,44 +79,66 @@ const UserProfile: React.FC = () => {
 
     const hasChanges = JSON.stringify(formData) !== JSON.stringify(originalData)
 
+    const getUserTypeBadge = (userType: string) => {
+        const typeConfig = {
+            admin: { color: 'bg-rose-100 text-rose-800 border-rose-200', icon: Shield, label: 'Admin' },
+            customer: { color: 'bg-orange-100 text-orange-800 border-orange-200', icon: User, label: 'Customer' },
+            vendor: { color: 'bg-purple-100 text-purple-800 border-purple-200', icon: Star, label: 'Vendor' }
+        }
+
+        const config = typeConfig[userType as keyof typeof typeConfig] || typeConfig.customer
+        const IconComponent = config.icon
+
+        return (
+            <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border ${config.color}`}>
+                <IconComponent size={16} />
+                {config.label}
+            </span>
+        )
+    }
+
     return (
         <DashboardLayout>
             <Toaster richColors position="top-right" />
 
-            {/* Header */}
+            {/* Enhanced Header */}
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-rose-100 rounded-xl shadow-sm">
-                        <User size={26} className="text-rose-600" />
+                    <div className="p-3 bg-gradient-to-br from-rose-100 to-orange-100 rounded-2xl shadow-sm">
+                        <User className="text-rose-600" size={28} />
                     </div>
-                    <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
+                    <div>
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-600 to-orange-500 bg-clip-text text-transparent">
+                            My Profile
+                        </h1>
+                        <p className="text-rose-500 text-sm mt-1">Manage your personal information and preferences</p>
+                    </div>
                 </div>
 
                 {!isEditing ? (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="px-5 py-2 rounded-xl border border-rose-500 
-                        text-rose-600 hover:bg-rose-600 hover:text-white transition-all flex items-center gap-2"
+                        className="btn bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                     >
-                        <Edit size={16} /> Edit
+                        <Edit size={18} /> Edit Profile
                     </button>
                 ) : (
                     <div className="flex gap-3">
                         <button
                             onClick={handleCancel}
-                            className="px-5 py-2 rounded-xl border border-gray-400 text-gray-600 hover:bg-gray-100 flex items-center gap-2"
+                            className="btn bg-rose-100 text-rose-700 hover:bg-rose-200 border-rose-200 hover:border-rose-300 transition-colors duration-200 flex items-center gap-2"
                         >
-                            <X size={16} /> Cancel
+                            <X size={18} /> Cancel
                         </button>
                         <button
                             onClick={handleSave}
                             disabled={!hasChanges || isUpdating}
-                            className="px-5 py-2 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition flex items-center gap-2 disabled:opacity-50"
+                            className="btn bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 disabled:opacity-50"
                         >
                             {isUpdating ? (
                                 <span className="loading loading-spinner loading-sm"></span>
-                            ) : <Save size={16} />}
-                            Save
+                            ) : <Save size={18} />}
+                            Save Changes
                         </button>
                     </div>
                 )}
@@ -125,79 +146,129 @@ const UserProfile: React.FC = () => {
 
             {/* Auth check */}
             {!isAuthenticated || !user ? (
-                <div className="bg-rose-50 border border-rose-200 p-8 rounded-xl text-center">
-                    <h3 className="text-xl text-rose-700 font-semibold mb-2">Access Denied</h3>
-                    <p className="text-rose-600">You must sign in to view your profile.</p>
+                <div className="bg-gradient-to-br from-rose-50 to-orange-50 border border-rose-200 rounded-2xl p-12 text-center">
+                    <User className="mx-auto text-rose-500 mb-4" size={64} />
+                    <h3 className="text-2xl font-bold text-rose-800 mb-2">Access Required</h3>
+                    <p className="text-rose-600">Please sign in to view your profile.</p>
                 </div>
             ) : isLoadingUserData ? (
-                <div className="flex justify-center py-20">
-                    <span className="loading loading-spinner text-rose-600"></span>
+                <div className="flex justify-center items-center py-20">
+                    <div className="text-center">
+                        <div className="loading loading-spinner loading-lg text-rose-500 mb-4"></div>
+                        <p className="text-rose-600 font-medium">Loading your profile...</p>
+                    </div>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    {/* Profile Card */}
-                    <div className="">
-                        <div className="bg-white shadow-lg rounded-2xl p-8 text-center border border-rose-100">
-                            <div className="w-28 h-28 rounded-full bg-rose-100 flex items-center justify-center mx-auto mb-4 shadow-inner">
-                                <User size={50} className="text-rose-600" />
+                    {/* Enhanced Profile Card */}
+                    <div className="lg:col-span-1">
+                        <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl p-8 text-center border border-rose-100 shadow-lg">
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-rose-200 to-orange-200 flex items-center justify-center mx-auto mb-6 shadow-inner border-4 border-white">
+                                <User size={60} className="text-rose-600" />
                             </div>
-                            <h2 className="text-xl font-bold text-gray-900">
+                            
+                            <h2 className="text-2xl font-bold text-rose-900 mb-2">
                                 {user.first_name} {user.last_name}
                             </h2>
-                            <p className="text-gray-600">{user.email}</p>
+                            <p className="text-rose-600 mb-4 flex items-center justify-center gap-2">
+                                <Mail size={16} />
+                                {user.email}
+                            </p>
 
-                            <div className="mt-3 px-3 py-1 inline-flex items-center rounded-full bg-orange-100 text-orange-700 text-sm">
-                                <Shield size={14} className="mr-1" />
-                                {user.user_type?.toUpperCase()}
+                            <div className="mb-6">
+                                {getUserTypeBadge(user.user_type)}
+                            </div>
+
+                            {/* Member Since */}
+                            <div className="bg-white rounded-xl p-4 border border-rose-200">
+                                <div className="flex items-center justify-center gap-2 text-rose-700 mb-2">
+                                    <Calendar size={16} />
+                                    <span className="font-semibold">Member Since</span>
+                                </div>
+                                <p className="text-rose-600 text-sm">
+                                    {userData?.created_at ? formatDate(userData.created_at) : "N/A"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Quick Stats */}
+                        <div className="bg-white rounded-2xl p-6 border border-rose-100 shadow-lg mt-6">
+                            <h3 className="text-lg font-semibold text-rose-900 mb-4 flex items-center gap-2">
+                                <Award className="text-orange-500" size={20} />
+                                Profile Completion
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-rose-700">Basic Info</span>
+                                    <span className="text-rose-600 font-semibold">100%</span>
+                                </div>
+                                <div className="w-full bg-rose-100 rounded-full h-2">
+                                    <div className="bg-gradient-to-r from-rose-500 to-orange-500 h-2 rounded-full" style={{ width: '100%' }}></div>
+                                </div>
+                                
+                                <div className="flex justify-between text-sm mt-4">
+                                    <span className="text-rose-700">Contact Info</span>
+                                    <span className="text-rose-600 font-semibold">{userData?.phone_number ? '100%' : '50%'}</span>
+                                </div>
+                                <div className="w-full bg-rose-100 rounded-full h-2">
+                                    <div className="bg-gradient-to-r from-rose-500 to-orange-500 h-2 rounded-full" style={{ width: userData?.phone_number ? '100%' : '50%' }}></div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Editable Info */}
+                    {/* Enhanced Editable Info */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white shadow-lg rounded-2xl p-8 border border-rose-100">
+                        <div className="bg-white rounded-2xl p-8 border border-rose-100 shadow-lg">
 
-                            <h3 className="text-lg font-semibold text-gray-900 mb-6">
+                            <h3 className="text-xl font-bold bg-gradient-to-r from-rose-600 to-orange-500 bg-clip-text text-transparent mb-2">
                                 Personal Information
                             </h3>
+                            <p className="text-rose-500 text-sm mb-6">Update your personal details and contact information</p>
 
-                            <div className="space-y-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                                 {/* First Name */}
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700">First Name</label>
+                                    <label className="block text-sm font-semibold text-rose-700 mb-2">First Name</label>
                                     {isEditing ? (
                                         <input
                                             name="first_name"
                                             value={formData.first_name}
                                             onChange={handleInputChange}
-                                            className="input input-bordered w-full rounded-xl focus:border-rose-500"
+                                            className="input input-bordered w-full bg-white text-rose-900 border-rose-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-200 rounded-xl"
+                                            placeholder="Enter your first name"
                                         />
                                     ) : (
-                                        <div className="p-3 bg-gray-50 rounded-xl">{user.first_name}</div>
+                                        <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl border border-rose-200 text-rose-900 font-medium">
+                                            {user.first_name}
+                                        </div>
                                     )}
                                 </div>
 
                                 {/* Last Name */}
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700">Last Name</label>
+                                    <label className="block text-sm font-semibold text-rose-700 mb-2">Last Name</label>
                                     {isEditing ? (
                                         <input
                                             name="last_name"
                                             value={formData.last_name}
                                             onChange={handleInputChange}
-                                            className="input input-bordered w-full rounded-xl focus:border-rose-500"
+                                            className="input input-bordered w-full bg-white text-rose-900 border-rose-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-200 rounded-xl"
+                                            placeholder="Enter your last name"
                                         />
                                     ) : (
-                                        <div className="p-3 bg-gray-50 rounded-xl">{userData?.last_name}</div>
+                                        <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl border border-rose-200 text-rose-900 font-medium">
+                                            {userData?.last_name}
+                                        </div>
                                     )}
                                 </div>
 
                                 {/* Email */}
-                                <div>
-                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                        <Mail size={16} /> Email
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-rose-700 mb-2 flex items-center gap-2">
+                                        <Mail size={16} /> Email Address
                                     </label>
                                     {isEditing ? (
                                         <input
@@ -205,17 +276,20 @@ const UserProfile: React.FC = () => {
                                             type="email"
                                             value={formData.email}
                                             onChange={handleInputChange}
-                                            className="input input-bordered w-full rounded-xl focus:border-rose-500"
+                                            className="input input-bordered w-full bg-white text-rose-900 border-rose-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-200 rounded-xl"
+                                            placeholder="Enter your email address"
                                         />
                                     ) : (
-                                        <div className="p-3 bg-gray-50 rounded-xl">{userData?.email}</div>
+                                        <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl border border-rose-200 text-rose-900 font-medium">
+                                            {userData?.email}
+                                        </div>
                                     )}
                                 </div>
 
                                 {/* Phone */}
-                                <div>
-                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                        <Phone size={16} /> Phone
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-rose-700 mb-2 flex items-center gap-2">
+                                        <Phone size={16} /> Phone Number
                                     </label>
                                     {isEditing ? (
                                         <input
@@ -223,61 +297,78 @@ const UserProfile: React.FC = () => {
                                             type="tel"
                                             value={formData.phone_number}
                                             onChange={handleInputChange}
-                                            className="input input-bordered w-full rounded-xl focus:border-rose-500"
+                                            className="input input-bordered w-full bg-white text-rose-900 border-rose-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-200 rounded-xl"
+                                            placeholder="Enter your phone number"
                                         />
                                     ) : (
-                                        <div className="p-3 bg-gray-50 rounded-xl">{userData?.phone_number}</div>
+                                        <div className={`p-3 rounded-xl border font-medium ${userData?.phone_number ? 'bg-gradient-to-r from-rose-50 to-orange-50 border-rose-200 text-rose-900' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
+                                            {userData?.phone_number || 'Not provided'}
+                                        </div>
                                     )}
                                 </div>
+                            </div>
 
-                                {/* Account Info */}
-                                <div className="pt-4 border-t border-gray-200">
-                                    <h4 className="text-md font-semibold text-gray-900 mb-3">Account Info</h4>
+                            {/* Account Information Section */}
+                            <div className="mt-8 pt-6 border-t border-rose-200">
+                                <h4 className="text-lg font-semibold text-rose-900 mb-4 flex items-center gap-2">
+                                    <Shield className="text-rose-600" size={20} />
+                                    Account Information
+                                </h4>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="text-sm text-gray-700 flex items-center gap-1">
-                                                <Calendar size={16} /> Member Since
-                                            </label>
-                                            <div className="p-3 bg-gray-50 rounded-xl">
-                                                {userData?.created_at ? formatDate(userData.created_at) : "Unknown"}
-                                            </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-rose-700 mb-2">User ID</label>
+                                        <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl border border-rose-200">
+                                            <code className="text-rose-700 font-mono">#{userData?.user_id}</code>
                                         </div>
+                                    </div>
 
-                                        <div>
-                                            <label className="text-sm text-gray-700">User ID</label>
-                                            <div className="p-3 bg-gray-50 rounded-xl font-mono text-sm">
-                                                #{userData?.user_id}
-                                            </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-rose-700 mb-2">Account Type</label>
+                                        <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl border border-rose-200 text-rose-900 font-medium capitalize">
+                                            {userData?.user_type}
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-                    </div>
 
-                    {/* Status Panel */}
-                    <div className="lg:col-span-3">
-                        <div className="bg-orange-50 border border-orange-200 p-6 rounded-2xl shadow-sm">
-                            <h3 className="text-lg font-semibold text-orange-800 mb-4 flex items-center gap-2">
-                                <Check size={20} /> Account Status
+                        {/* Enhanced Status Panel */}
+                        <div className="bg-gradient-to-br from-rose-50 to-orange-50 border border-rose-200 rounded-2xl p-8 shadow-lg mt-6">
+                            <h3 className="text-xl font-bold text-rose-900 mb-6 flex items-center gap-3">
+                                <Check className="text-rose-600" size={24} /> 
+                                Account Status
                             </h3>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="bg-white p-4 rounded-xl shadow text-center">
-                                    <div className="text-2xl font-bold text-orange-600">✓</div>
-                                    <p className="text-gray-600 text-sm mt-1">Email Verified</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="bg-white p-6 rounded-xl border border-rose-200 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <Check className="text-emerald-600" size={24} />
+                                    </div>
+                                    <div className="text-lg font-semibold text-emerald-700 mb-1">Verified</div>
+                                    <p className="text-rose-600 text-sm">Email Verified</p>
                                 </div>
 
-                                <div className="bg-white p-4 rounded-xl shadow text-center">
-                                    <div className="text-orange-600 text-xl font-bold">Active</div>
-                                    <p className="text-gray-600 text-sm mt-1">Account Active</p>
+                                <div className="bg-white p-6 rounded-xl border border-rose-200 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <Star className="text-orange-600" size={24} />
+                                    </div>
+                                    <div className="text-lg font-semibold text-orange-700 mb-1">Active</div>
+                                    <p className="text-rose-600 text-sm">Account Status</p>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-xl border border-rose-200 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <Clock className="text-rose-600" size={24} />
+                                    </div>
+                                    <div className="text-lg font-semibold text-rose-700 mb-1">Member</div>
+                                    <p className="text-rose-600 text-sm">
+                                        Since {userData?.created_at ? formatDate(userData.created_at) : "N/A"}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             )}
         </DashboardLayout>
